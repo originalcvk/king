@@ -4,28 +4,37 @@
     <meta charset="UTF-8">
     <title>Salmon Recipe</title>
     <script>
-        function openAll() {
-          var e = document.getElementById('expAll');
-          e.classList.toggle('exp');
-          e.classList.toggle('col');
-          var details = document.querySelectorAll('details');
-          Array.from(details).forEach(function(obj, idx) {
-            if (e.classList.contains('exp')) {
-              obj.open = true;
-              // Otherwise make it false
+        function toggleDetails() {
+            var e = document.getElementById('expAll');
+            e.classList.toggle('exp');
+            e.classList.toggle('col');
+            var visible = detailsAreVisible();
+            if (visible) {
+                e.innerText = "Click to hide all images";
             } else {
-              obj.open = false;
+                e.innerText = "Click to show all images";
             }
-          });
+            var details = document.querySelectorAll('details');
+            Array.from(details).forEach(function(obj, idx) {
+                obj.open = visible;
+            });
         }
-
+        function detailsAreVisible() {
+            var e = document.getElementById('expAll');
+            return e.classList.contains('exp');
+        }
+        function expandAndPrint() {
+            if(!detailsAreVisible()) {
+                toggleDetails();
+            }
+            window.print();
+        }
     </script>
 </head>
 <body>
 <h1>All About Salmon</h1>
-<button id="expAll" class="col" onclick="openAll();">Click to expand all images and
-    print
-</button>
+<button id="expAll" class="col" onclick="toggleDetails();">Click to show all images</button>
+<button id="print" class="col" onclick="expandAndPrint();">Click to print</button>
 <h2>Buying</h2>
 <h3>Types of salmon</h3>
 <details>
@@ -86,10 +95,10 @@
 <h3>Utensils</h3>
 <ul>
     <li>
-<details>
-    <summary>Shallow baking pan</summary>
-    <img src="includes/baking_pan.jpg"/>
-</details>
+        <details>
+            <summary>Shallow baking pan</summary>
+            <img src="includes/baking_pan.jpg"/>
+        </details>
     </li>
     <li>Small dish or cup (for mixing liquids & herbs)</li>
     <li>Cutting board</li>
