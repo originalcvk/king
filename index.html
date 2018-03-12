@@ -3,37 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <title>Salmon Recipe</title>
+    <script>
+        function openAll() {
+          var e = document.getElementById('expAll');
+          e.classList.toggle('exp');
+          e.classList.toggle('col');
+          var details = document.querySelectorAll('details');
+          Array.from(details).forEach(function(obj, idx) {
+            if (e.classList.contains('exp')) {
+              obj.open = true;
+              // Otherwise make it false
+            } else {
+              obj.open = false;
+            }
+          });
+        }
+
+    </script>
 </head>
 <body>
-<h2>How to buy salmon</h2>
+<h1>All About Salmon</h1>
+<button id="expAll" class="col" onclick="openAll();">Click to expand all images and
+    print
+</button>
+<h2>Buying</h2>
 <h3>Types of salmon</h3>
-<p>Any salmon is a good choice! The worst salmon is better for your heart than chicken or almost
-    anything else.
-</p>
-<p>Sockeye (aka Red or Blueback Salmon) is the healthiest. It may also be called "Wild Alaskan
-    Salmon".</p>
 <details>
-    <summary>It should be a deep red color.</summary>
-    <img src="includes/sockeye.jpg" height="200px"/>
+    <summary>Sockeye (aka Red or Blueback Salmon) is the best. It may also be called "Wild Alaskan
+        Salmon". It should be a deep red color.
+    </summary>
+    <img src="includes/sockeye.jpg" height="300px"/>
 </details>
 
-<p>Chinook (aka King Salmon) is second best.</p>
 <details>
-    <summary>It should be a dark orange or red color.</summary>
-    <img src="includes/king.jpg" height="200px"/>
+    <summary>Chinook (aka King Salmon) is second best. It should be a dark orange or red color
+        .
+    </summary>
+    <img src="includes/king.jpg" height="300px"/>
 </details>
 
 <p>If neither is available, Coho Salmon is next best, or just get the darkest red/orange color with
-    the least amount of white you can find. Beware that Farmed Atlantic Salmon might be artificially
-    colored to make it redder, wild of any type is generally better, but do what works for your
-    budget.</p>
-
+    the least amount of white you can find.</p>
+<p>Prefer "wild" over "farmed", but do what works for your budget.</p>
 <p>Prefer "fresh" over "previously frozen" for taste, no effect on health.</p>
+<p>Farmed Atlantic Salmon might be artificially colored, try to avoid it unless it is all they
+    have.</p>
 
-<h3>Instructions for fish guy</h3>
+<h3>Instructions for the fish guy</h3>
 <p>No matter what you choose:</p>
 <ul>
-    <li>Buy FILLETS (look like the above photos), not steaks</li>
+    <li>
+        <details>
+            <summary>Buy FILLETS, not steaks</summary>
+            <img
+                    src="includes/steak_vs_fillet.jpg" width="500px"/></details>
+    </li>
     <li>Buy 1/3 to 1/4 lb per portion you are going to cook, i.e. a little more than 1/2 lb
         for two portions, or 1lb for 3 portions, is good
     </li>
@@ -60,11 +84,16 @@
 </ul>
 <h2>Recipe</h2>
 <h3>Utensils</h3>
+<ul>
+    <li>
 <details>
     <summary>Shallow baking pan</summary>
     <img src="includes/baking_pan.jpg"/>
 </details>
-
+    </li>
+    <li>Small dish or cup (for mixing liquids & herbs)</li>
+    <li>Cutting board</li>
+</ul>
 <h3>Ingredients</h3>
 
 
