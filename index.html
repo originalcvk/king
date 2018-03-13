@@ -4,6 +4,37 @@
     <meta charset="UTF-8">
     <title>Salmon Recipe</title>
     <script>
+        function Fraction() {}
+
+        Fraction.prototype.convert = function(x, improper) {
+            improper = improper || false;
+            var abs = Math.abs(x);
+            this.sign = x/abs;
+            x = abs;
+            var stack = 0;
+            this.whole = !improper ? Math.floor(x) : 0;
+            var fractional = !improper ? x-this.whole : abs;
+            /*recursive function that transforms the fraction*/
+            function recurs(x){
+                stack++;
+                var intgr = Math.floor(x); //get the integer part of the number
+                var dec = (x - intgr); //get the decimal part of the number
+                if(dec < 0.0019 || stack > 20) return [intgr,1]; //return the last integer you divided by
+                var num = recurs(1/dec); //call the function again with the inverted decimal part
+                return[intgr*num[0]+num[1],num[0]]
+            }
+            var t = recurs(fractional);
+            this.numerator = t[0];
+            this.denominator = t[1];
+        };
+
+        Fraction.prototype.toString = function() {
+            var l  = this.sign.toString().length;
+            var sign = l === 2 ? '-' : '';
+            var whole = this.whole !== 0 ? this.sign*this.whole+' ': sign;
+            return whole+this.numerator+'/'+this.denominator;
+        };
+
         function toggleDetails() {
             var e = document.getElementById('expAll');
             e.classList.toggle('exp');
@@ -29,10 +60,28 @@
             }
             window.print();
         }
+        function updatePortions(e) {
+            var frac = new Fraction();
+            var portions = e.value;
+            var data = document.querySelectorAll('data');
+            Array.from(data).forEach(function(obj, idx) {
+                obj.innerHTML = frac.convert(obj.value * portions, false).toString();
+            });
+        }
     </script>
 </head>
 <body>
 <h1>All About Salmon</h1>
+<label for="numPortions">How many portions are you making?</label>
+<select id="numPortions" onchange="updatePortions(this);"
+        style="width: 70px; text-align-last: center;">
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="3" selected>3</option>
+    <option value="4">4</option>
+    <option value="5">5</option>
+    <option value="6">6</option>
+</select>
 <button id="expAll" class="col" onclick="toggleDetails();">Click to show all images</button>
 <button id="print" class="col" onclick="expandAndPrint();">Click to print</button>
 <h2>Buying</h2>
@@ -41,14 +90,13 @@
     <summary>Sockeye (aka Red or Blueback Salmon) is the best. It may also be called "Wild Alaskan
         Salmon". It should be a deep red color.
     </summary>
-    <img src="includes/sockeye.jpg" height="300px"/>
+    <img src="includes/sockeye.jpg" width="400px"/>
 </details>
 
 <details>
-    <summary>Chinook (aka King Salmon) is second best. It should be a dark orange or red color
-        .
+    <summary>Chinook (aka King Salmon) is second best. It should be a dark orange or red color.
     </summary>
-    <img src="includes/king.jpg" height="300px"/>
+    <img src="includes/king.jpg" width="400px"/>
 </details>
 
 <p>If neither is available, Coho Salmon is next best, or just get the darkest red/orange color with
@@ -65,17 +113,25 @@
         <details>
             <summary>Buy FILLETS, not steaks</summary>
             <img
-                    src="includes/steak_vs_fillet.jpg" width="500px"/></details>
+                    src="includes/steak_vs_fillet.jpg" width="400px"/></details>
     </li>
-    <li>Buy 1/3 to 1/4 lb per portion you are going to cook, i.e. a little more than 1/2 lb
-        for two portions, or 1lb for 3 portions, is good
+    <li>Buy between
+        <data value="0.25">X &div; 4</data>
+        and
+        <data
+                value="0.3333333333333333333333333333">X &div; 3
+        </data>
+        lb.
     </li>
 </ul>
 <p>Ask the fish market guy to:</p>
 <ul>
     <li>Remove the skin</li>
     <li>Remove the bones</li>
-    <li>Cut into X number of fillets (one fillet per portion)</li>
+    <li>Cut into
+        <data value="1">X</data>
+        fillets (one fillet per portion)
+    </li>
 </ul>
 <h2>Storage</h2>
 <p>COOKED salmon will last ~1 week in the fridge.</p>
@@ -87,24 +143,82 @@
     "previously frozen", actual frozen salmon).</p>
 <ul>
     <li>Remove it from the wrapping it was sold in</li>
-    <li>Put it in a freezer bag (i.e. ziplock)</li>
+    <li>Put it in a freezer bag (i.e. Ziploc)</li>
     <li>Remove the air from the bag</li>
     <li>Put it in the coldest part of the freezer</li>
 </ul>
 <h2>Recipe</h2>
+
+<h3>Options</h3>
+
+
 <h3>Utensils</h3>
 <ul>
     <li>
         <details>
             <summary>Shallow baking pan</summary>
-            <img src="includes/baking_pan.jpg"/>
+            <img src="includes/baking_pan.jpg" width="400px"/>
         </details>
     </li>
     <li>Small dish or cup (for mixing liquids & herbs)</li>
     <li>Cutting board</li>
+    <li>
+        <details>
+            <summary>Chopping knife</summary>
+            <img src="includes/chopping_knife.jpg" width="400px"/>
+        </details>
+    </li>
+    <li>Aluminum foil</li>
+    <li>Fork</li>
 </ul>
 <h3>Ingredients</h3>
-
+<p>For the below ingredients, X is the number of portions you are making. So e.g. "X / 2
+    tbsp" means 1.5 tablespoons if you are making 3 portions.</p>
+<p>NOTE: 1 tbsp = one of the big spoons we eat with, 1 tsp = one of the small spoons we eat with. No
+    need to dig out the measuring spoons. For dry stuff like salt, do not put a mound of it in the
+    spoon - run your finger or a knife over the spoon to make sure it is full but not
+    overflowing.</p>
+<ul>
+    <li>Salmon Fillets,
+        <data value="1">X</data>
+    </li>
+    <li>1 Lemon, sliced into
+        <data value="1">X</data>
+        slices, squeeze the rest for juice, keep
+        <data value="1">X</data>
+        tsp of juice<br/>
+        Can also try with a lime or orange instead! Lime recipe is the same. For orange:
+        <ul>
+            <li>Double amount of juice</li>
+            <li>Half amount of herbs, garlic, salt, and pepper</li>
+            <li>Prefer parsley instead of dill or basil</li>
+        </ul>
+    </li>
+    <li>Salt,
+        <data value="1">X</data>
+        pinches
+    </li>
+    <li>Pepper
+        <data value="0.25">X &div; 4</data>
+        tsp
+    </li>
+    <li>Fresh Dill, Basil, and/or Parsley chopped,
+        <data value="1">X</data>
+        tbsp all together
+    </li>
+    <li>Extra Virgin Olive Oil,
+        <data value="1">X</data>
+        tbsp
+    </li>
+    <li>Fresh Garlic,
+        <data value="0.5">X &div; 2</data>
+        cloves, crushed with fork into paste,
+        OR<br/>
+        Premade Minced Garlic,
+        <data value="0.75">X &times; 3/4</data>
+        tsp
+    </li>
+</ul>
 
 <h3>Instructions</h3>
 <ol>
