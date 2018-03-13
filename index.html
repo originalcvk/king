@@ -26,14 +26,47 @@
             var t = recurs(fractional);
             this.numerator = t[0];
             this.denominator = t[1];
+            return this;
         };
 
         Fraction.prototype.toString = function() {
             var l  = this.sign.toString().length;
             var sign = l === 2 ? '-' : '';
-            var whole = this.whole !== 0 ? this.sign*this.whole+' ': sign;
-            return whole+this.numerator+'/'+this.denominator;
+            var whole = this.whole !== 0 ? this.sign*this.whole: sign;
+            if(this.numerator === 0) {
+                return whole;
+            } else {
+                return whole+fractionToUnicode(this.numerator, this.denominator);
+            }
         };
+
+        function fractionToUnicode(num, den) {
+            switch(num) {
+                case 1:
+                    switch(den) {
+                        case 2:
+                            return "&frac12;";
+                        case 3:
+                            return "&#8531;";
+                        case 4:
+                            return "&frac14;";
+                    }
+                    break;
+                case 2:
+                    switch(den) {
+                        case 3:
+                            return "&#8532;";
+                    }
+                    break;
+                case 3:
+                    switch(den) {
+                        case 4:
+                            return "&frac34;";
+                    }
+                    break;
+            }
+            return ' '+num+'/'+den;
+        }
 
         function toggleDetails() {
             var e = document.getElementById('expAll');
@@ -60,20 +93,21 @@
             }
             window.print();
         }
-        function updatePortions(e) {
+        function updatePortions() {
             var frac = new Fraction();
-            var portions = e.value;
+            var portions = document.getElementById('numPortions').value;
             var data = document.querySelectorAll('data');
             Array.from(data).forEach(function(obj, idx) {
                 obj.innerHTML = frac.convert(obj.value * portions, false).toString();
             });
         }
+
     </script>
 </head>
-<body>
+<body onload="updatePortions();">
 <h1>All About Salmon</h1>
 <label for="numPortions">How many portions are you making?</label>
-<select id="numPortions" onchange="updatePortions(this);"
+<select id="numPortions" onchange="updatePortions();"
         style="width: 70px; text-align-last: center;">
     <option value="1">1</option>
     <option value="2">2</option>
@@ -160,7 +194,7 @@
             <img src="includes/baking_pan.jpg" width="400px"/>
         </details>
     </li>
-    <li>Small dish or cup (for mixing liquids & herbs)</li>
+    <li>Small dish or cup (for mixing liquids &amp; herbs)</li>
     <li>Cutting board</li>
     <li>
         <details>
@@ -172,8 +206,6 @@
     <li>Fork</li>
 </ul>
 <h3>Ingredients</h3>
-<p>For the below ingredients, X is the number of portions you are making. So e.g. "X / 2
-    tbsp" means 1.5 tablespoons if you are making 3 portions.</p>
 <p>NOTE: 1 tbsp = one of the big spoons we eat with, 1 tsp = one of the small spoons we eat with. No
     need to dig out the measuring spoons. For dry stuff like salt, do not put a mound of it in the
     spoon - run your finger or a knife over the spoon to make sure it is full but not
@@ -182,13 +214,24 @@
     <li>Salmon Fillets,
         <data value="1">X</data>
     </li>
-    <li>1 Lemon, sliced into
-        <data value="1">X</data>
-        slices, squeeze the rest for juice, keep
-        <data value="1">X</data>
-        tsp of juice<br/>
+    <li>Lemon:
+        <ul>
+            <li>
+                <details>
+                    <summary>
+                        <data value="1">X</data>
+                        thin slices (not
+                        wedges)
+                    </summary>
+                    <img src="includes/lemon_slices.jpg" width="400px"/></details>
+            </li>
+            <li>
+                <data value="1">X</data>
+                tsp of juice<br/></li>
+        </ul>
         Can also try with a lime or orange instead! Lime recipe is the same. For orange:
         <ul>
+            <li>It will be sweeter &amp; less herb-y...</li>
             <li>Double amount of juice</li>
             <li>Half amount of herbs, garlic, salt, and pepper</li>
             <li>Prefer parsley instead of dill or basil</li>
@@ -202,7 +245,7 @@
         <data value="0.25">X &div; 4</data>
         tsp
     </li>
-    <li>Fresh Dill, Basil, and/or Parsley chopped,
+    <li>Fresh Dill, Basil, and/or Parsley, chopped,
         <data value="1">X</data>
         tbsp all together
     </li>
@@ -214,7 +257,7 @@
         <data value="0.5">X &div; 2</data>
         cloves, crushed with fork into paste,
         OR<br/>
-        Premade Minced Garlic,
+        Jarred Minced Garlic,
         <data value="0.75">X &times; 3/4</data>
         tsp
     </li>
@@ -223,6 +266,7 @@
 <h3>Instructions</h3>
 <ol>
     <li>Preheat oven to 325</li>
+    <li></li>
 </ol>
 </body>
 </html>
